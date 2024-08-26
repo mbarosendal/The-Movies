@@ -58,12 +58,12 @@ namespace The_Movies.ViewModels
 
         private void AddMovie()
         {
-            // Tjekker om filmen allerede er tilføjet
-            if (_filmRepository.IsMovieAlreadyAdded(MovieToAdd.Title))
-            {
-                MessageBox.Show("The movie with the title '" + MovieToAdd.Title + "' already exists.");
-                return;
-            }
+            //// Tjekker om filmen allerede er tilføjet
+            //if (_filmRepository.IsMovieAlreadyAdded(MovieToAdd.Title))
+            //{
+            //    MessageBox.Show("The movie with the title '" + MovieToAdd.Title + "' already exists.");
+            //    return;
+            //}
 
             try
             {
@@ -77,8 +77,8 @@ namespace The_Movies.ViewModels
                     PremiereDate = MovieToAdd.PremiereDate
                 };
 
-                filmListBox
                 _filmRepository.AddMovie(newMovie);
+                Movies.Add(newMovie);
 
                 // Behøver måske update af UI eller andre kompunenter.
                 //UpdateMovieListView();

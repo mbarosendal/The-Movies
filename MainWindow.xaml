@@ -44,7 +44,7 @@
             </StackPanel>
 
             <!-- "Film Oprettelse" Højre side (Liste af film) -->
-                <ListBox Name="filmListBox" ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Background="LightGray" Margin="0,0,0,0"/>
+                <ListBox Name="filmListBox" ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Summary" Grid.Column="1" Background="LightGray" Margin="0,0,0,0"/>
         </Grid>
     </TabItem>
 
