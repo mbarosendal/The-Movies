@@ -12,6 +12,8 @@ namespace The_Movies.Repositories
     public class FilmRepository
     {
         private List<Film> _movies;
+        private string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FilmListe.csv");
+        private string visningFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OversigtVisninger.csv");
 
         public FilmRepository()
         {
@@ -50,9 +52,9 @@ namespace The_Movies.Repositories
         }
 
         // Gem film til en CSV-fil
-        public void SaveMoviesToCSV(string filePath = "movies.csv")
+        public void SaveMoviesToCSV()
         {
-            SaveMoviesAsync();
+        SaveMoviesAsync();
 
             using (StreamWriter sw = new StreamWriter(filePath))
             {

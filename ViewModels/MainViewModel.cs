@@ -23,17 +23,18 @@ namespace The_Movies.ViewModels
 
         public MainViewModel()
         {
-            AddCommand = new RelayCommand(x => AddMovie(x), x => CanAddMovie(x));
-            RemoveCommand = new RelayCommand(x => RemoveMovie(x), x => CanRemoveMovie(x));
-            ClearCommand = new RelayCommand(x => ClearMovie(x), x => CanClearMovie(x));
+            AddCommand = new RelayCommand(x => AddMovie(), x => CanAddMovie(x));
+            //RemoveCommand = new RelayCommand(x => RemoveMovie(x), x => CanRemoveMovie(x));
+            ClearCommand = new RelayCommand(x => ClearMovie(x));
             _filmRepository = new FilmRepository();
             Movies = new ObservableCollection<Film>(_filmRepository.GetAllMovies());
+            MovieToAdd = new Film();
         }
 
-        private bool CanClearMovie(object x)
-        {
-            throw new NotImplementedException();
-        }
+        //private bool CanClearMovie(object x)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private void ClearMovie(object x)
         {
@@ -55,7 +56,7 @@ namespace The_Movies.ViewModels
             return true;
         }
 
-        private void AddMovie(Film MovieToAdd)
+        private void AddMovie()
         {
             // Tjekker om filmen allerede er tilføjet
             if (_filmRepository.IsMovieAlreadyAdded(MovieToAdd.Title))
@@ -76,12 +77,14 @@ namespace The_Movies.ViewModels
                     PremiereDate = MovieToAdd.PremiereDate
                 };
 
+                filmListBox
                 _filmRepository.AddMovie(newMovie);
 
                 // Behøver måske update af UI eller andre kompunenter.
                 //UpdateMovieListView();
 
                 _filmRepository.SaveMoviesAsync();
+                _filmRepository.SaveMoviesToCSV();
 
                 MessageBox.Show("Filmen er nu gemt!");
             }

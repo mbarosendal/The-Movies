@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
+using The_Movies.ViewModels;
 
 namespace The_Movies
 {
@@ -16,37 +18,29 @@ namespace The_Movies
     /// </summary>
     public partial class MainWindow : Window
     {
-        // Filepath
-        private string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FilmListe.csv");
-        private string visningFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OversigtVisninger.csv");
-
+  
         //timeZone
         private TimeZoneInfo cetZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
         private DispatcherTimer timer;
 
         public MainWindow()
         {
-
-        InitializeComponent();
-        LoadVisningerFromFile();
-        InitializeTimer();
-
+            InitializeComponent();
+            //LoadVisningerFromFile();
+            DataContext = new MainViewModel();
         }
 
         private void PopulateTimeSlots()
         {
 
-        cbSpilletid.Items.Clear();
-        
-        DateTime now = TimeZoneInfo.ConvertTime(DateTime.Now, cetZone);
-        DateTime endTime = now.AddHours(24); // 24 hour timer
-        for (DateTime time = now; time <=endTime; time = time.AddHour(1))
-        {
-            cbSpilletid.Item.add(time.ToString("HH:mm"));
-        }
+            cbSpilletid.Items.Clear();
 
+            DateTime now = TimeZoneInfo.ConvertTime(DateTime.Now, cetZone);
+            DateTime endTime = now.AddHours(24); // 24 hour timer
+            for (DateTime time = now; time <= endTime; time = time.AddHours(1))
+            {
+                cbSpilletid.Items.Add(time.ToString("HH:mm"));
+            }
         }
-
     }
-
 }

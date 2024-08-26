@@ -38,9 +38,9 @@
                 <DatePicker Height="25" Text="{Binding MovieToAdd.PremiereDate}" Margin="0,0,0,10" Name="dpPremiereDato" HorizontalAlignment="Left" Width="115" />
 
 
-                <Button Content="Tilføj Film" Width="100" Click="TilføjFilm_Click" HorizontalAlignment="Left" Command="{Binding AddCommand}"/>
+                <Button Content="Tilføj Film" Width="100" HorizontalAlignment="Left" Command="{Binding AddCommand}"/>
 
-                <Button Content="Ryd" Width="100" Click="Ryd_Click" HorizontalAlignment="Left" Margin="0,10" Command="{Binding ClearCommand}"/>
+                <Button Content="Ryd" Width="100" HorizontalAlignment="Left" Margin="0,10" Command="{Binding ClearCommand}"/>
             </StackPanel>
 
             <!-- "Film Oprettelse" Højre side (Liste af film) -->
@@ -56,7 +56,7 @@
 
                 <!-- Vælg Biograf -->
                 <TextBlock Text="Vælg Biograf:"/>
-                <ComboBox Name="cbBiograf" Width="280" Margin="0,0,0,10" SelectionChanged="cbBiograf_SelectionChanged">
+                <ComboBox Name="cbBiograf" Width="280" Margin="0,0,0,10">
                     <ComboBoxItem Content="Cinemaxx Århus"/>
                     <ComboBoxItem Content="Nordisk Film Odense"/>
                     <ComboBoxItem Content="Cinemaxx København"/>
@@ -83,7 +83,7 @@
                 </ComboBox>
 
                 <!-- Planlægning -->
-                <Button Content="Planlæg" Width="100" Click="Planlæg_Click"/>
+                <Button Content="Planlæg" Width="100"/>
             </StackPanel>
         </Grid>
     </TabItem>
