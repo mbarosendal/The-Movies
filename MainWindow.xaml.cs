@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,6 +10,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using The_Movies.Repositories;
 using The_Movies.ViewModels;
 
 namespace The_Movies
@@ -18,29 +20,26 @@ namespace The_Movies
     /// </summary>
     public partial class MainWindow : Window
     {
-  
-        //timeZone
-        private TimeZoneInfo cetZone = TimeZoneInfo.FindSystemTimeZoneById("Central European Standard Time");
-        private DispatcherTimer timer;
+        MovieViewModel movieViewModel;
+        ForestillingViewModel forestillingViewModel;
+        BookingViewModel bookingViewModel;
+        FilmRepository _filmRepository = new FilmRepository();
 
         public MainWindow()
         {
             InitializeComponent();
-            //LoadVisningerFromFile();
-            DataContext = new MainViewModel();
-        }
 
-        private void PopulateTimeSlots()
-        {
+            // sæt en viewmodel specifik til BookingTab-tabben
+            bookingViewModel = new BookingViewModel();
+            BookingTab.DataContext = bookingViewModel;
 
-            cbSpilletid.Items.Clear();
+            // sæt en viewmodel specifik til PlanningTab-tabben
+            forestillingViewModel = new ForestillingViewModel();
+            PlanningTab.DataContext = forestillingViewModel;
 
-            DateTime now = TimeZoneInfo.ConvertTime(DateTime.Now, cetZone);
-            DateTime endTime = now.AddHours(24); // 24 hour timer
-            for (DateTime time = now; time <= endTime; time = time.AddHours(1))
-            {
-                cbSpilletid.Items.Add(time.ToString("HH:mm"));
-            }
+            // sæt en viewmodel specifik til MoviesTab-tabben
+            movieViewModel = new MovieViewModel();
+            MoviesTab.DataContext = movieViewModel;
         }
     }
 }

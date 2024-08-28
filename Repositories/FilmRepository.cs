@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,17 +12,20 @@ namespace The_Movies.Repositories
 {
     public class FilmRepository
     {
-        private List<Film> _movies;
+        private ObservableCollection<Film> _movies;
         private string filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "FilmListe.csv");
         private string visningFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "OversigtVisninger.csv");
 
         public FilmRepository()
         {
-            _movies = new List<Film>()
-            {
-                new Film { Title = "The Shawshank Redemption", Duration = TimeSpan.FromMinutes(142), Genre = "Drama" },
-            };
-            LoadMoviesfromCSV();
+            _movies = new ObservableCollection<Film>();
+            //{
+            //    //testdata
+            //    new Film { Title = "The Shawshank Redemption", Duration = TimeSpan.FromMinutes(142), Genre = "Drama" },
+            //    new Film { Title = "The Godfather", Duration = TimeSpan.FromMinutes(175), Genre = "Crime" },
+            //    new Film { Title = "The Dark Knight", Duration = TimeSpan.FromMinutes(152), Genre = "Action" },
+            //};
+            //LoadMoviesfromCSV();
         }
 
         // metode til at tilføje en film til listen
@@ -30,17 +34,30 @@ namespace The_Movies.Repositories
             if (!IsMovieAlreadyAdded(movie.Title))
             {
                 _movies.Add(movie);
+                //MessageBox.Show("Filmen er blevet tilføjet til listen.");
+            }
+            else
+            { 
+                MessageBox.Show("Fejl: Titlen er allerede tilføjet til listen.");
             }
         }
 
         // metode til at fjerne en film fra listen
         public void RemoveMovie(Film movie)
         {
-            _movies.Remove(movie);
+            if (movie != null)
+            {
+                _movies.Remove(movie);
+                MessageBox.Show("Filmen er blevet fjernet fra listen.");
+            }
+            else
+            {
+                MessageBox.Show("Fejl: Filmen kunne ikke findes i listen.");
+            }
         }
 
         // metode til at hente alle film
-        public List<Film> GetAllMovies()
+        public ObservableCollection<Film> GetAllMovies()
         {
             return _movies;
         }
@@ -52,9 +69,9 @@ namespace The_Movies.Repositories
         }
 
         // Gem film til en CSV-fil
-        public void SaveMoviesToCSV()
+        public void SaveMoviesToCSV(ObservableCollection<Film> _movies)
         {
-        SaveMoviesAsync();
+            //SaveMoviesAsync();
 
             using (StreamWriter sw = new StreamWriter(filePath))
             {
@@ -69,21 +86,21 @@ namespace The_Movies.Repositories
             }
         }
 
-        public async void SaveMoviesAsync()
-        {
-            try
-            {
-                // Asynkron gemme film til CSV for at undgå blockering af UI
-                await Task.Run(() => _movies);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Fejl opstod under tilføjelse af film til CSV: " + ex.Message);
-            }
-        }
+        //public async void SaveMoviesAsync()
+        //{
+        //    try
+        //    {
+        //        // Asynkron gemme film til CSV for at undgå blockering af UI
+        //        await Task.Run(() => _movies);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MessageBox.Show("Fejl opstod under tilføjelse af film til CSV: " + ex.Message);
+        //    }
+        //}
 
         // Indlæs film fra en CSV-fil
-        public void LoadMoviesfromCSV(string filePath = "movies.csv")
+        public void LoadMoviesfromCSV()
         {
             if (!File.Exists(filePath))
                 return;

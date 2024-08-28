@@ -7,11 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
 
-
-     <!--tabcontrol er til tilføjelse af faner--> 
-<TabControl>
-    <!-- Fane 1: Film Oprettelse -->
-    <TabItem Header="Film Oprettelse">
+     <!--tabcontrol er til tilføjelse af faner-->
+    <TabControl>
+        <!-- Fane 1: Film Oprettelse -->
+        <TabItem x:Name="MoviesTab" Header="Film Oprettelse">
         <Grid Margin="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -35,65 +34,56 @@
                 <TextBox Name="tbInstruktør" Text="{Binding MovieToAdd.Director}" Margin="0,0,0,10" Width="280" HorizontalAlignment="Left"/>
                 
                 <TextBlock Text="Premiere Dato:"/>
-                <DatePicker Height="25" Text="{Binding MovieToAdd.PremiereDate}" Margin="0,0,0,10" Name="dpPremiereDato" HorizontalAlignment="Left" Width="115" />
+                <DatePicker Height="25" SelectedDate="{Binding MovieToAdd.PremiereDate}" Margin="0,0,0,10" Name="dpPremiereDato" HorizontalAlignment="Left" Width="115" />
 
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="Tilføj Film" Width="100" HorizontalAlignment="Left" Command="{Binding AddCommand}"/>
+                    <Button Content="Ryd Felter" Width="100" HorizontalAlignment="Left" Command="{Binding ClearCommand}"/>
+                    <Button Content="Fjern Film" Width="100" HorizontalAlignment="Left" Command="{Binding RemoveCommand}"/>
+                </StackPanel>
 
-                <Button Content="Tilføj Film" Width="100" HorizontalAlignment="Left" Command="{Binding AddCommand}"/>
-
-                <Button Content="Ryd" Width="100" HorizontalAlignment="Left" Margin="0,10" Command="{Binding ClearCommand}"/>
-            </StackPanel>
+                </StackPanel>
 
             <!-- "Film Oprettelse" Højre side (Liste af film) -->
-                <ListBox Name="filmListBox" ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Summary" Grid.Column="1" Background="LightGray" Margin="0,0,0,0"/>
+                <ListBox Name="filmListBox" ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Summary" SelectedItem="{Binding SelectedMovie}" Grid.Column="1" Background="LightGray" Margin="0,0,0,0"/>
         </Grid>
     </TabItem>
 
     <!-- Fane 2: Planlægning -->
-    <TabItem Header="Planlægning" Height="20" VerticalAlignment="Top">
+        <TabItem x:Name="PlanningTab" Header="Planlægning" Margin="-2,-2,-2,2">
         <Grid Margin="20">
             <StackPanel>
                 <TextBlock Text="Planlæg en Filmvisning" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
 
                 <!-- Vælg Biograf -->
                 <TextBlock Text="Vælg Biograf:"/>
-                <ComboBox Name="cbBiograf" Width="280" Margin="0,0,0,10">
-                    <ComboBoxItem Content="Cinemaxx Århus"/>
-                    <ComboBoxItem Content="Nordisk Film Odense"/>
-                    <ComboBoxItem Content="Cinemaxx København"/>
-                    <ComboBoxItem Content="Nordisk Film Randers"/>
-                </ComboBox>
+                <ComboBox Name="cbBiograf" ItemsSource="{Binding Cinemas, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCinema}" DisplayMemberPath="Summary" Width="280" Margin="0,0,0,10" />
 
-                <!-- Vælg Sal -->
+                    <!-- Vælg Sal -->
                 <TextBlock Text="Vælg Sal:"/>
-                <ComboBox Name="cbSal" Width="280" Margin="0,0,0,10" IsEnabled="False">
-                </ComboBox>
+                <ComboBox Name="cbSal" ItemsSource="{Binding SelectedCinema.CinemaHalls, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedCinemaHall}" DisplayMemberPath="Id" Width="280" Margin="0,0,0,10" />
 
-                <!-- Vælg Spilletid -->
+                    <!-- Vælg Spilletid -->
                 <TextBlock Text="Vælg Spilletid:"/>
-                <ComboBox Name="cbSpilletid" Width="280" Margin="0,0,0,10" IsEnabled="False">
-                    <ComboBoxItem Content="12:00"/>
-                    <ComboBoxItem Content="15:00"/>
-                    <ComboBoxItem Content="18:00"/>
-                    <ComboBoxItem Content="20:00"/>
-                </ComboBox>
+                    <ComboBox Name="cbSpilletid" ItemsSource="{Binding SelectedCinemaHall.PlayTimes, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedPlayTime}" DisplayMemberPath="FormattedTime" Width="280" Margin="0,0,0,10" />
 
-                <!-- Vælg Film -->
+                    <!-- Vælg Film -->
                 <TextBlock Text="Vælg Film:"/>
-                <ComboBox Name="cbFilm" Width="280" Margin="0,0,0,10" IsEnabled="False">
-                </ComboBox>
+                    <ComboBox Name="cbFilm" Width="280" Margin="0,0,0,10" ItemsSource="{Binding Movies, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding SelectedMovie}" DisplayMemberPath="Title" />
 
-                <!-- Planlægning -->
-                <Button Content="Planlæg" Width="100"/>
-            </StackPanel>
+                    <!-- Planlægning -->
+                    <Button Content="Planlæg" Command="{Binding AddForestillingCommand}" Width="100"/>
+
+                </StackPanel>
         </Grid>
     </TabItem>
     <!-- Fane 3: Oversigt -->
-    <TabItem Header="Oversigt">
+    <TabItem x:Name="BookingTab" Header="Booking">
         <Grid Margin="20">
             <StackPanel>
                 <TextBlock Text="Planlagte Filmvisninger" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
-                <ListBox Name="oversigtListBox" Background="LightGray" Margin="0,0,0,0"/>
-            </StackPanel>
+                <ListBox Name="oversigtListBox" ItemsSource="{Binding Forestillinger, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Summary" Background="LightGray" Margin="0,0,0,0"/>
+                </StackPanel>
         </Grid>
     </TabItem>
 </TabControl>
